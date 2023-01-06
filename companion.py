@@ -8,6 +8,7 @@ import feedparser
 import os
 import shutil
 import sys
+import time
 
 # Preferred temperature unit
 TEMP_UNIT = ""
@@ -27,6 +28,11 @@ WEATHER_URL = ""
 # RSS Feeds - the first one is always the repository RSS feed.
 FEEDS = []
 
+# Refresh times for News, Weather, and Pages, respectively.
+NEWS_REFRESH = -1
+WEATHER_REFRESH = -1
+PAGE_REFRESH = -1
+
 isDaemon = False
 
 def loadConfig():
@@ -35,6 +41,9 @@ def loadConfig():
 	global API_KEY
 	global WEATHER_URL
 	global FEEDS
+	global NEWS_REFRESH
+	global WEATHER_REFRESH
+	global PAGE_REFRESH
 
 	config = configparser.ConfigParser()
 
@@ -52,7 +61,11 @@ def loadConfig():
 
 	feedsPreparse=config['RSS']['Commits'] + " " + config['RSS']['Feeds']
 	FEEDS = feedsPreparse.split()
-	
+
+	if (isDaemon):
+		NEWS_REFRESH = config['Daemon']['NewsRefresh']
+		WEATHER_REFRESH = config['Daemon']['WeatherRefresh']
+		PAGE_REFRESH = config['Daemon']['PageRefresh']
 
 def mainMenu():
 	print("Hypolive Companion v0.01")
@@ -89,11 +102,7 @@ def mainMenu():
 				updateNews()
 			case "A":
 				print("Full update")
-				print("Updating weather...")
-				updateWeather()
-				print("Updating RSS feeds...")
-				updateNews()
-				print("Done.")
+				updateAll()
 			case "B":
 				print("Periodic full update")
 				print("In order to do a periodic full update, you must run this file as a daemon.")
@@ -106,14 +115,60 @@ def mainMenu():
 				print("Invalid Command. Note that the input must be uppercase if it's a letter.")
 
 def daemonize():
-	print("Daemonize not finished yet.")
+	print("Starting Hypnolive Companion in daemon mode.")
+	print("News will update every " + str(NEWS_REFRESH) + " seconds.")
+	print("Weather will update every " + str(WEATHER_REFRESH) + " seconds.")
+	print("Pages will update every " + str(PAGE_REFRESH) + " seconds.")
+	
+	# We update everything first, then begin the loop.
+	updateAll()
+
+	timeStartNews	= time.time()
+	timeStartWeather= time.time()
+	timeStartPages	= time.time()
+	
+	while(True):
+		timeNews	= time.time()
+		timeWeather	= time.time()
+		timePages	= time.time()
+
+
+		if ((timeNews - timeStartNews) > float(NEWS_REFRESH)):
+			print("Updating News...")
+			updateNews()
+			print("Done.")
+			timeStartNews = time.time()
+		
+		if ((timeWeather - timeStartWeather) > float(WEATHER_REFRESH)):
+			print("Updating Weather...")
+			updateWeather()
+			print("Done.")
+			timeWeather = time.time()
+
+		if ((timePages - timeStartPages) > float(PAGE_REFRESH)):
+			print("Updating Hypnolive pages...")
+			updateHypnolive()
+			print("Done.")
+			timePages = time.time()
+
+def updateAll():
+	print("Updating weather...")
+	updateWeather()
+
+	print("Updating RSS feeds...")
+	updateNews()
+	
+	print("Updating Hypnolive Pages...")
+	updateHypnolive()
+	
+	print("Done.")
 
 def updateHypnolive():
 	# This is poorly tested
 	#git = repo.git
 
 	#git.pull()
-	print("Ack")
+	print("Hypnolive Page updating not yet implemented.")
 	
 
 def updateWeather():
