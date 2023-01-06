@@ -112,9 +112,6 @@ WantedBy=multi-user.target
 
 And most Flatpak Installs:
 ```
-
-You may now start your new service with `systemctl --user status hypnolive-companion.service`, and make it start on bootup with `systemctl --user enable hypnolive-companion.service`.
-
 [Unit]
 Description=Hypnolive Companion
 After=multi-user.target
@@ -128,6 +125,8 @@ ExecStart=/usr/bin/python3 %h/.var/app/com.valvesoftware.Steam/.local/share/Stea
 [Install]
 WantedBy=multi-user.target
 ```
+
+You may now start your new service with `systemctl --user status hypnolive-companion.service`, and make it start on bootup with `systemctl --user enable hypnolive-companion.service`.
 
 ### Contributing
 
