@@ -18,6 +18,7 @@ WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
 
 # The city of which you reside in, or otherwise want weather data from.
 CITY = ""
+CITY_HUMANFRIENDLY = ""
 
 # Your OpenWeatherMap API key. You must get your own.
 API_KEY = ""
@@ -38,6 +39,7 @@ isDaemon = False
 def loadConfig():
 	global TEMP_UNIT
 	global CITY
+	global CITY_HUMANFRIENDLY
 	global API_KEY
 	global WEATHER_URL
 	global FEEDS
@@ -56,6 +58,10 @@ def loadConfig():
 	TEMP_UNIT=config['Weather']['DegreeUnit']
 	CITY=config['Weather']['City']
 	API_KEY=config['Weather']['APIKey']
+
+	# We must run through the CITY to replace all spaces with "%20"
+	CITY_HUMANFRIENDLY = CITY
+	CITY = CITY.replace(" ", "%20")
 
 	WEATHER_URL = WEATHER_BASE_URL + "q=" + CITY + "&appid=" + API_KEY
 
@@ -189,7 +195,7 @@ def updateWeather():
 
 		# Write weather data into array.
 		weatherData = [
-			"Weather for " + CITY,
+			"Weather for " + CITY_HUMANFRIENDLY,
 			"Temperature: " + str(temperature) + " Kelvin",
 			"High: " + str(temperatureHigh) + " Kelvin",
 			"Low: " + str(temperatureLow) + " Kelvin",
