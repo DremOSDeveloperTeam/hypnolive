@@ -7,7 +7,7 @@ import configparser
 import feedparser
 import os
 import shutil
-
+import sys
 
 # Preferred temperature unit
 TEMP_UNIT = ""
@@ -27,6 +27,8 @@ WEATHER_URL = ""
 # RSS Feeds - the first one is always the repository RSS feed.
 FEEDS = []
 
+isDaemon = False
+
 def loadConfig():
 	global TEMP_UNIT
 	global CITY
@@ -35,7 +37,12 @@ def loadConfig():
 	global FEEDS
 
 	config = configparser.ConfigParser()
-	config.read('companion.ini')
+
+	if (os.path.exists('companion.ini')):
+		config.read('companion.ini')
+	else:
+		print("FATAL: companion.ini does not exist. Have you setup the companion? Check README.md.")
+		sys.exit(1)
 
 	TEMP_UNIT=config['Weather']['DegreeUnit']
 	CITY=config['Weather']['City']
@@ -54,7 +61,7 @@ def mainMenu():
 	continueFlag = True
 
 	while(continueFlag):
-		print("1. Update Hypnolive pages")
+		print("1. Update (Pull) Hypnolive pages")
 		print("2. Reset all pages (DO THIS BEFORE COMMITS)")
 		print("3. Update weather data")
 		print("4. Update RSS feeds (News)")
@@ -97,6 +104,9 @@ def mainMenu():
 				continueFlag = False
 			case _:
 				print("Invalid Command. Note that the input must be uppercase if it's a letter.")
+
+def daemonize():
+	print("Daemonize not finished yet.")
 
 def updateHypnolive():
 	# This is poorly tested
@@ -283,11 +293,29 @@ def restoreNews(): # Ugly.
 			shutil.rmtree(os.path.join(root, d))
 
 	print("Feed cache deleted.")
-	
+
+def loadArgs():
+	global isDaemon
+
+	for arg in sys.argv:
+		match (arg):
+			case ("-d"):			# Daemonize
+				isDaemon = True
 
 def main():
+	loadArgs()
 	loadConfig()
-	mainMenu()
+
+	if (isDaemon):
+		daemonize()
+	else:
+		mainMenu()
 	
 
+# First we must check that Python version is >= 3.10
+if (sys.version_info.major != 3 and sys.version_info.minor < 10):
+	print("FATAL: Python 3.10 or higher is required.")
+	sys.exit(1)
+
+# Now we may run the main function
 main()
