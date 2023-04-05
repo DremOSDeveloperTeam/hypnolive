@@ -25,7 +25,7 @@ Look, I don't use Windows. I ran from it the second I had a chance. That said, t
 * Go to Hypnospace Outlaw's mod folder in Windows Explorer - Usually C:\Users\[yourusername]\Tendershoot\HypnOS\mods\
 * Right click, and click "Open Open with Git BASH" (or something like that)
 * Clone this repository
- * Run: git clone https://github.com/Innovation/hypnolive
+ * Run: git clone https://github.com/DremOSDeveloperTeam/hypnolive
 <!--* Clone this repository - git clone https://git.innovation-inc.org/Innovation/hypnolive-->
 
 At this point, the mod will be made available in-game. Start the game!
