@@ -55,7 +55,7 @@ def loadConfig():
 		print("FATAL: companion.ini does not exist. Have you setup the companion? Check README.md.")
 		sys.exit(1)
 
-	TEMP_UNIT=config['Weather']['DegreeUnit']
+	TEMP_UNIT=config['Weather']['DegreeUnit'].lower()
 	CITY=config['Weather']['City']
 	API_KEY=config['Weather']['APIKey']
 
@@ -63,7 +63,14 @@ def loadConfig():
 	CITY_HUMANFRIENDLY = CITY
 	CITY = CITY.replace(" ", "%20")
 
-	WEATHER_URL = WEATHER_BASE_URL + "q=" + CITY + "&appid=" + API_KEY
+	# Create a URL
+	WEATHER_URL = WEATHER_BASE_URL + "q=" + CITY + "&appid=" + API_KEY	# Normal URL
+
+	# Add unit query
+	if(TEMP_UNIT == "c"):
+		WEATHER_URL = WEATHER_URL + "&units=metric"
+	elif(TEMP_UNIT == "f"):
+		WEATHER_URL = WEATHER_URL + "&units=imperial"
 
 	feedsPreparse=config['RSS']['Commits'] + " " + config['RSS']['Feeds']
 	FEEDS = feedsPreparse.split()
@@ -200,9 +207,9 @@ def updateWeather():
 		# Write weather data into array.
 		weatherData = [
 			"Weather for " + CITY_HUMANFRIENDLY,
-			"Temperature: " + str(temperature) + " Kelvin",
-			"High: " + str(temperatureHigh) + " Kelvin",
-			"Low: " + str(temperatureLow) + " Kelvin",
+			"Temperature: " + str(temperature) + TEMP_UNIT.upper(),
+			"High: " + str(temperatureHigh) + TEMP_UNIT.upper(),
+			"Low: " + str(temperatureLow) + TEMP_UNIT.upper(),
 			"It is currently " + report[0]['main'] + ", " + report[0]['description'],
 			"Humidity: " + str(humidity) + " Percent",
 			"Pressure: " + str(pressure) + " hPa"
