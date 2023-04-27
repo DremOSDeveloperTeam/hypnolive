@@ -81,7 +81,7 @@ def loadConfig():
 		PAGE_REFRESH = config['Daemon']['PageRefresh']
 
 def mainMenu():
-	print("Hypolive Companion v0.01")
+	print("Hypolive Companion v0.1")
 	print("------------------------")
 	print("What would you like to do?")
 	continueFlag = True
