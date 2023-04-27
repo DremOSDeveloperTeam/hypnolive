@@ -264,9 +264,20 @@ def updateNews():
 	entry = newsFeed.entries[0]
 
 	# Get ~rssfeedsfull.hsp data to play with, then reopen with write permissions.
-	allRSSFeeds = open("hs/69_hypnolive/hypnolivenews/~rssfeedsfull.hsp", "r")
-	allRSSFeedsJSON = json.load(allRSSFeeds)
-	allRSSFeeds.close()
+	try:
+		allRSSFeeds = open("hs/69_hypnolive/hypnolivenews/~rssfeedsfull.hsp", "r")
+		allRSSFeedsJSON = json.load(allRSSFeeds)
+		allRSSFeeds.close()
+	except:
+		# This fix sucks.
+		print("First run. Resetting pages.")
+		restoreWeather()
+		restoreNews()
+		
+		allRSSFeeds = open("hs/69_hypnolive/hypnolivenews/~rssfeedsfull.hsp", "r")
+                allRSSFeedsJSON = json.load(allRSSFeeds)
+                allRSSFeeds.close()
+
 	allRSSFeeds = open("hs/69_hypnolive/hypnolivenews/~rssfeedsfull.hsp", "w")
 
 	currentElement = 1
