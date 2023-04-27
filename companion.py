@@ -170,11 +170,16 @@ def updateAll():
 	print("Done.")
 
 def updateHypnolive():
-	# This is poorly tested
-	#git = repo.git
+	# This is poorly tested, and will almost definitely break something at some point.
 
-	#git.pull()
-	print("Hypnolive Page updating not yet implemented.")
+	localRepo = Repo(os.getcwd())
+
+	if localRepo.is_dirty(untracked_files=True):
+		print("Notice: Changes were detected. Cannot pull changes.")
+		return
+	
+	print("Pulling new pages from origin.")
+	localRepo.remotes.origin.pull()
 	
 
 def updateWeather():
@@ -392,6 +397,9 @@ def main():
 if (sys.version_info.major != 3 and sys.version_info.minor < 10):
 	print("FATAL: Python 3.10 or higher is required.")
 	sys.exit(1)
+
+# Change current directory to script location.
+os.chdir(os.path.realpath(os.path.dirname(__file__)))
 
 # Now we may run the main function
 main()
