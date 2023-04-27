@@ -26,7 +26,7 @@ Look, I don't use Windows. I ran from it the second I had a chance. That said, t
 * Right click, and click "Open Open with Git BASH" (or something like that)
 * Clone this repository
  * Run: git clone https://github.com/DremOSDeveloperTeam/hypnolive
-<!--* Clone this repository - git clone https://git.innovation-inc.org/Innovation/hypnolive-->
+* Install dependencies with `pip3 install -r requirements.txt`
 
 At this point, the mod will be made available in-game. Start the game!
 * Click the "Mods" button on whatever save file you're going to use. Check "Hypnolive"
@@ -41,6 +41,7 @@ You will immediately have access to the Hypnolive zone. Welcome to Hypnolive!
  * If you use the Steam Flatpak, it'll be ~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/compatdata/844590/pfx/drive_c/users/steamuser/Tendershoot/mods/
 * Clone this repository
  * Run: git clone https://git.innovation-inc.org/Innovation/hypnolive
+* Install dependencies with `pip3 install -r requirements.txt`
 
 At this point, the mod will be made available in-game. Start the game!    
 * Click the "Mods" button on whatever save file you're going to use. Check "Hypnolive"
@@ -49,7 +50,7 @@ At this point, the mod will be made available in-game. Start the game!
 You will immediately have access to the Hypnolive zone. Welcome to Hypnolive! 
 
 ### Updating
-Eventually, this mod will keep itself up to date. However, during this experimental stage, it will require you to update it yourself.
+This mod keeps itself up to date, but to force an update, you can follow the steps below.
 
 #### Windows
 
@@ -65,6 +66,58 @@ The pages should automagically refresh when you restart HypnOS or the game.
 * Pull the repository - git pull 
 
 The pages should automagically refresh when you restart HypnOS or the game.
+
+### Configuring the Hypnolive Companion
+
+#### Tutorial
+
+##### Just Getting the Thing to Work
+
+In order to use the Hypnolive Companion (HC), you must first configure it. The configuration file for HC is companion.ini, in the base folder of the mod.
+
+An example file (companion_example.ini) is provided, and will help you with configuration.
+
+Copy companion_example.ini to companion.ini. **You must copy this file, or HC will crash.**
+
+Now that you have copied the file. Hypnolive Companion will begin to work. However, weather information will not update, because you need an OpenWeatherMap API key to use it.
+
+##### Setting up weather
+
+In order to set up weather, you must obtain an OpenWeatherMap API key. To do this, first sign up for an account at [OpenWeatherMap's website](https://openweathermap.org).
+
+At this point, an API key will be generated for you. You can obtain it at the [API Key page](https://home.openweathermap.org/api_keys).
+
+Copy the key and replace the default APIKey value (under the Weather section) with the key.
+
+Be sure to also change the City value to your city (name only), and set your degree unit.
+
+**Note that this will likely not start working immediately, as it takes a while before OpenWeatherMap's API recognizes new keys. This could take hours.**
+
+#### Example Configuration File
+
+```
+; City is the city you reside in.
+; DegreeUnit is the degree unit you use - k (kelvin), c (celcius), f (fahrenheit).
+; APIKey is your OpenWeatherMap API key - you must get your own.
+[Weather]
+City=New York City
+DegreeUnit=c
+APIKey=ATotallyRealAPIKey
+
+; NewsRefresh is the frequency in seconds in which news will refresh when running as a daemon.
+; WeatherRefresh is the frequency in seconds in which weather will refresh when running as a daemon.
+; PageRefresh is the frequency in seconds in which updated pages will be pulled from the repository.
+[Daemon]
+NewsRefresh=3600
+WeatherRefresh=1800
+PageRefresh=1800
+
+; Commits is the RSS feed for the Hypnolive repository.
+; Feeds is a list of your RSS feeds, separated by SPACES.
+[RSS]
+Commits=https://github.com/DremOSDeveloperTeam/hypnolive/commits.atom
+Feeds=https://www.pine64.org/feed/
+```
 
 ### Automatically Starting the Script
 
@@ -88,7 +141,7 @@ After=multi-user.target
 Type=simple
 Restart=always
 WorkingDirectory=/path/to/mods/hypnolive/
-ExecStart=/usr/bin/python3 /path/to/companion.py
+ExecStart=/usr/bin/python3 /path/to/companion.py -d
 
 [Install]
 WantedBy=multi-user.target
@@ -104,7 +157,7 @@ After=multi-user.target
 Type=simple
 Restart=always
 WorkingDirectory=%h/Tendershoot/HypnOS/mods/hypnolive/
-ExecStart=/usr/bin/python3 %h/Tendershoot/HypnOS/mods/hypnolive/companion.py                                                                                                                                          
+ExecStart=/usr/bin/python3 %h/Tendershoot/HypnOS/mods/hypnolive/companion.py -d
 
 [Install]
 WantedBy=multi-user.target
