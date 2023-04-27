@@ -158,14 +158,14 @@ def daemonize():
 			timePages = time.time()
 
 def updateAll():
+	print("Updating Hypnolive Pages...")
+	updateHypnolive()
+
 	print("Updating weather...")
 	updateWeather()
 
 	print("Updating RSS feeds...")
 	updateNews()
-	
-	print("Updating Hypnolive Pages...")
-	updateHypnolive()
 	
 	print("Done.")
 
@@ -174,12 +174,11 @@ def updateHypnolive():
 
 	localRepo = Repo(os.getcwd())
 
-	if localRepo.is_dirty(untracked_files=True):
-		print("Notice: Changes were detected. Cannot pull changes.")
-		return
-	
-	print("Pulling new pages from origin.")
-	localRepo.remotes.origin.pull()
+	print("Starting pull form origin.")
+	try:
+		localRepo.remotes.origin.pull()
+	except:
+		print("Cannot pull pages. More than likely, resetting pages (2) and then attempting to pull again (1) will fix this issue.")
 	
 
 def updateWeather():
