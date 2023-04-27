@@ -22,10 +22,12 @@ Look, I don't use Windows. I ran from it the second I had a chance. That said, t
 #### Windows
 
 * Open Git BASH for Windows
-* Go to Hypnospace Outlaw's mod folder in Windows Explorer - Usually C:\Users\[yourusername]\Tendershoot\HypnOS\mods\
+* Go to Hypnospace Outlaw's mod folder in Windows Explorer - Usually `C:\Users\[yourusername]\Tendershoot\HypnOS\mods\`
 * Right click, and click "Open Open with Git BASH" (or something like that)
 * Clone this repository
-   * Run: git clone `https://github.com/DremOSDeveloperTeam/hypnolive`
+   * Run: `git clone https://github.com/DremOSDeveloperTeam/hypnolive`
+* Change directory to new hypnolive folder
+   * Run: `cd hypnolive`
 * Install dependencies with `pip3 install -r requirements.txt`
 
 At this point, the mod will be made available in-game. Start the game!
@@ -34,20 +36,26 @@ At this point, the mod will be made available in-game. Start the game!
 
 You will immediately have access to the Hypnolive zone. Welcome to Hypnolive!
 
+**You will now need to configure Hypnolive Companion.** Go to the "[Configuring the Hypnolive Companion](#configuring-the-hypnolive-companion)" section for more information.
+
 #### Linux
 ##### **NOTE: This assumes you are running the Windows version of Hypnospace Outlaw through Proton. This is necessary if you plan to contribute to Hypnolive!**
 
 * Open a terminal and go to Hypnospace Outlaw's mod folder - Usually ~/Tendershoot/HypnOS/mods/
  * If you use the Steam Flatpak, it'll be ~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/compatdata/844590/pfx/drive_c/users/steamuser/Tendershoot/mods/
 * Clone this repository
-   * Run: git clone `https://git.innovation-inc.org/Innovation/hypnolive`
+   * Run: `git clone https://git.innovation-inc.org/Innovation/hypnolive`
+* Change directory to new hypnolive folder
+   * Run: `cd hypnolive`
 * Install dependencies with `pip3 install -r requirements.txt`
 
 At this point, the mod will be made available in-game. Start the game!    
 * Click the "Mods" button on whatever save file you're going to use. Check "Hypnolive"
 * Start the save file.
 
-You will immediately have access to the Hypnolive zone. Welcome to Hypnolive! 
+You will immediately have access to the Hypnolive zone. Welcome to Hypnolive!
+
+**You will now need to configure Hypnolive Companion.** Go to the "[Configuring the Hypnolive Companion](#configuring-the-hypnolive-companion)" section for more information.
 
 ### Updating
 This mod keeps itself up to date, but to force an update, you can follow the steps below.
