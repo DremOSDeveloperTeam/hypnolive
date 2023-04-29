@@ -81,8 +81,8 @@ def loadConfig():
 		PAGE_REFRESH = config['Daemon']['PageRefresh']
 
 def mainMenu():
-	print("Hypolive Companion v0.1")
-	print("------------------------")
+	print("Hypolive Companion v0.1.1")
+	print("-------------------------")
 	print("What would you like to do?")
 	continueFlag = True
 
@@ -98,9 +98,12 @@ def mainMenu():
 
 		match choice:
 			case "1":
+				deleteCaptureCopies()
 				print("Updating Hypnolive...")
 				updateHypnolive()
+				createCaptureCopies()
 			case "2":
+				deleteCaptureCopies()
 				print("Resetting all modified pages...")
 				print("Restoring weather...")
 				restoreWeather()
@@ -108,14 +111,20 @@ def mainMenu():
 				restoreNews()
 				print("Done")
 			case "3":
+				deleteCaptureCopies()
 				print("Updating weather...")
 				updateWeather()
+				createCaptureCopies()
 			case "4":
+				deleteCaptureCopies()
 				print("Updating RSS feeds...")
 				updateNews()
+				createCaptureCopies()
 			case "A":
-				print("Full update")
+				deleteCaptureCopies()
+				print("Performing full update")
 				updateAll()
+				createCaptureCopies()
 			case "B":
 				print("Periodic full update")
 				print("In order to do a periodic full update, you must run this file as a daemon.")
@@ -163,6 +172,21 @@ def daemonize():
 			updateHypnolive()
 			print("Done.")
 			timePages = time.time()
+
+def createCaptureCopies():
+	print("Copying to hsa, hsb, and hsc...")
+	shutil.copytree(os.getcwd() + "/hs", os.getcwd() + "/hsa", symlinks=False, ignore=None, copy_function=shutil.copy2, ignore_dangling_symlinks=False, dirs_exist_ok=False)
+	shutil.copytree(os.getcwd() + "/hs", os.getcwd() + "/hsb", symlinks=False, ignore=None, copy_function=shutil.copy2, ignore_dangling_symlinks=False, dirs_exist_ok=False)
+	shutil.copytree(os.getcwd() + "/hs", os.getcwd() + "/hsc", symlinks=False, ignore=None, copy_function=shutil.copy2, ignore_dangling_symlinks=False, dirs_exist_ok=False)
+
+def deleteCaptureCopies():
+	print("Deleting hsa, hsb, and hsc...")
+	try:
+		shutil.rmtree(os.getcwd() + "/hsa")
+		shutil.rmtree(os.getcwd() + "/hsb")
+		shutil.rmtree(os.getcwd() + "/hsc")
+	except FileNotFoundError:
+		print("hs has not been copied, ignoring.")
 
 def updateAll():
 	print("Updating Hypnolive Pages...")
